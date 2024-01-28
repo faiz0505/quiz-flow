@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 
 export async function middleware(request) {
-  const isAuthenticate = request.cookies.get(process.env.COOKIE_SESSION_TOKEN);
+  const sessionTokenCookie =
+    request.cookies.get("next-auth.session-token") ||
+    request.cookies.get("__Secure-next-auth.session-token");
   const path = request.nextUrl.pathname;
 
   if (path.startsWith("/profile")) {
