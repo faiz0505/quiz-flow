@@ -19,7 +19,7 @@ const DeleteBtn = ({ id }) => {
       });
       if (res.ok) {
         toast.success("deleted successfully");
-        for (let time = 0; time < 3; time++) {
+        for (let time = 0; time < 6; time++) {
           router.refresh();
         }
       } else {

@@ -8,7 +8,6 @@ import { useSession } from "next-auth/react";
 import { FaUser } from "react-icons/fa6";
 import Image from "next/image";
 const navigation = () => {
-  // const session = await getServerSession(authOptions);
   const { data: session } = useSession();
   const navItems = [
     { title: "Home", link: "/" },

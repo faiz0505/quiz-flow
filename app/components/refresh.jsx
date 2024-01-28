@@ -11,7 +11,7 @@ const refresh = () => {
       color="success"
       className="text-white"
       onClick={() => {
-        for (let time = 0; time < 3; time++) {
+        for (let time = 0; time < 6; time++) {
           router.refresh();
         }
       }}

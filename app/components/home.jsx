@@ -7,10 +7,12 @@ import toast from "react-hot-toast";
 import { Divider } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 const HomePage = () => {
   const [difficulty, setDiffiulty] = useState([]);
   const [category, setCategry] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   let difficulties = ["easy", "medium", "hard"];
@@ -55,13 +57,17 @@ const HomePage = () => {
     if (!selectedCategory || !slectedDifficulties) {
       toast.error("please select category or difficulty level");
     } else {
-      setIsLoading(true);
-      router.push(
-        `/quiz-start?${buildQueryString(
-          "cat",
-          selectedCategory
-        )}&${buildQueryString("diff", slectedDifficulties)}`
-      );
+      if (session) {
+        setIsLoading(true);
+        router.push(
+          `/quiz-start?${buildQueryString(
+            "cat",
+            selectedCategory
+          )}&${buildQueryString("diff", slectedDifficulties)}`
+        );
+      } else {
+        toast.error("please signin to continue");
+      }
     }
   };
   return (

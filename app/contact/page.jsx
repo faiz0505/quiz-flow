@@ -11,10 +11,8 @@ import emailjs from "@emailjs/browser";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 const page = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const form = useRef();
   const {
     register,
