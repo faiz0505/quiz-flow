@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 export async function middleware(request) {
   const isAuthenticate = request.cookies.get(process.env.COOKIE_SESSION_TOKEN);
   const path = request.nextUrl.pathname;
+
   if (path.startsWith("/profile")) {
     if (!isAuthenticate) {
       return NextResponse.rewrite(new URL("/signin", request.url));
