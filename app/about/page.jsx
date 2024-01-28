@@ -22,17 +22,25 @@ const page = () => {
         <h4 className="mt-2 font-bold mb-1">Follow :</h4>
         <ul className="flex gap-x-4">
           <li>
-            <Link href={""}>
+            <Link
+              href={
+                "https://www.instagram.com/sayyad_faiz_ali_?igsh=MXhnNTUxeGFheWx6OA=="
+              }
+            >
               <FaInstagram className="text-2xl" />
             </Link>
           </li>
           <li>
-            <Link href={""}>
+            <Link
+              href={
+                "https://www.linkedin.com/in/faiz-ali-041343217?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+              }
+            >
               <FaLinkedin className="text-2xl" />
             </Link>
           </li>
           <li>
-            <Link href={""}>
+            <Link href={"https://github.com/faiz0505"}>
               <FaGithub className="text-2xl" />
             </Link>
           </li>

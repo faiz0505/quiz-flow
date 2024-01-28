@@ -20,14 +20,16 @@ const navigation = () => {
     <header className="md:w-[80vw] w-full mx-auto rounded-full h-12 bg-transparent backdrop-blur-sm z-50 border flex  justify-between items-center px-5 overflow-hidden">
       {/* logo */}
       <div>
-        <Image
-          src={"/logo.png"}
-          height={50}
-          width={80}
-          className=""
-          priority
-          quality={100}
-        />
+        <Link href={"/"}>
+          <Image
+            src={"/logo.png"}
+            height={50}
+            width={80}
+            className=""
+            priority
+            quality={100}
+          />
+        </Link>
       </div>
       {/* nav items */}
       <div className="text-white">
