@@ -18,9 +18,9 @@ const fetchQuizes = async (url, user) => {
     });
 
     const data = await res.json();
-    // console.log(data);
+
     const filteredData = data.filter((quiz) => quiz.user === user);
-    // console.log(filteredData);
+
     return filteredData;
   } catch (error) {
     return null;
@@ -66,7 +66,7 @@ const page = async () => {
             </h1>
             <RefreshBtn />
           </div>
-          {filteredData.length > 0 ? (
+          {!filteredData || filteredData?.length > 0 ? (
             <ScrollShadow className="w-full md:h-60 h-96" hideScrollBar>
               <ul className=" shadow py-3 flex flex-col gap-y-3">
                 {filteredData.map((item) => {
