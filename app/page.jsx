@@ -10,8 +10,7 @@ const page = () => {
       <Card className="md:w-1/2 w-full">
         <CardHeader>
           <p className="text-center font-semibold text-sm">
-            Explore diverse quizzes, track your scores, and compete on the
-            public leaderboard with QuizFlow's dynamic features
+            Explore diverse quizzes, track your scores and review your test with QuizFlow's dynamic features
           </p>
         </CardHeader>
         <Divider />
