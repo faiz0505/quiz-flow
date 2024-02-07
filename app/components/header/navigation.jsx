@@ -24,6 +24,7 @@ const navigation = () => {
             src={"/logo.png"}
             height={50}
             width={80}
+            alt="QuizFlow's Logo"
             className=""
             priority
             quality={100}

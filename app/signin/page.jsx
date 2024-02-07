@@ -29,8 +29,8 @@ const Login = () => {
         redirect: false,
       });
       if (res.ok) {
-        toast.success("Login successful.");
         router.push("/profile");
+        toast.success("Login successful.");
       } else {
         toast.error(res.error);
       }
@@ -91,13 +91,19 @@ const Login = () => {
           Login
         </Button>
       </form>
-
-      <p className="mt-4">
-        New user?
-        <Link href="/signup" className="text-blue-500 ml-1">
-          Register
-        </Link>
-      </p>
+      <div className="flex justify-between">
+        <p className="mt-4">
+          <Link href="/forgot-password" className="text-blue-500 ml-1">
+            forgot password?
+          </Link>
+        </p>
+        <p className="mt-4">
+          New user?
+          <Link href="/signup" className="text-blue-500 ml-1">
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

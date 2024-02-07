@@ -27,19 +27,18 @@ const Register = () => {
         },
         body: JSON.stringify(data),
       });
-      const msg = await res.json();
       if (res.ok) {
         toast.success("Congrats! you have successfully registered");
         router.replace("/signin");
       } else {
-        toast.error(msg.error);
+        const msg = await res?.json();
+        toast.error(msg.error || msg.message);
       }
     } catch (error) {
-      toast.promise(msg, {
-        loading: "loading...",
-        success: msg.error,
-        error: msg.error,
-      });
+      console.log(error);
+      toast.error(
+        "An error occurred!please try again later or refresh the page"
+      );
     } finally {
       setIsLoading(false);
     }

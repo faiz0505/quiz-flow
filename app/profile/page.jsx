@@ -11,7 +11,6 @@ import LogoutBtn from "../components/logout";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { Spinner } from "@nextui-org/spinner";
-
 const fetchQuizes = async (url, user) => {
   try {
     const res = await fetch(`${url}/api/quiz`, {
