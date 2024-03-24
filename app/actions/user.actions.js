@@ -2,7 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { dbConnection } from "../lib/db/connection";
-import { User } from "../lib/db/model";
+import { Quiz, User } from "../lib/db/model";
+import { ErrorHandler } from "../utils";
 
 export const getAllUser = async () => {
   try {
@@ -10,7 +11,7 @@ export const getAllUser = async () => {
     const users = await User.find();
     return JSON.parse(JSON.stringify(users));
   } catch (error) {
-    throw new Error(`Could not get all users : ${error}`);
+    ErrorHandler(error);
   }
 };
 
@@ -18,9 +19,23 @@ export const deleteUser = async (id) => {
   try {
     await dbConnection();
     const deletedUser = await User.deleteOne({ _id: id });
+    const deletedQuizzes = await Quiz.deleteMany({ user: id });
     revalidatePath("/admin-dashboard");
-    return JSON.parse(JSON.stringify(deletedUser));
+    return {
+      deletedUser: JSON.parse(JSON.stringify(deletedUser)),
+      deletedQuizzes: JSON.parse(JSON.stringify(deletedQuizzes)),
+    };
   } catch (error) {
-    throw new Error(`Could'nt delete the user : ${error}`);
+    ErrorHandler(error);
+  }
+};
+
+export const fetchUserById = async (id) => {
+  try {
+    await dbConnection();
+    const user = await User.findById(id);
+    return JSON.parse(JSON.stringify(user));
+  } catch (error) {
+    ErrorHandler(error);
   }
 };

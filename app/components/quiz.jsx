@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { ErrorHandler } from "../utils";
 export default function Quiz() {
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
   const [suffledOptions, setShufflesOptions] = useState([]);
@@ -33,6 +34,7 @@ export default function Quiz() {
   const difficulty = searchParams.get("diff");
   const { height, width } = useWindowSize();
   const { data: session } = useSession();
+
   const fetcher = async (params) => {
     const res = await fetch(
       `https://opentdb.com/api.php?amount=10&category=${params[1]}&difficulty=${params[2]}`
@@ -120,7 +122,7 @@ export default function Quiz() {
         );
       }
     } catch (error) {
-      toast.error(error);
+      ErrorHandler(error);
     }
   };
   useEffect(() => {
@@ -128,7 +130,7 @@ export default function Quiz() {
     if (Object.keys(quizes).length == 10) {
       const data = {
         quiz: { ...quizes },
-        user: session.user.email,
+        user: session.user.id,
         category: category,
         difficulty: difficulty,
         points: correctAnswerCount,

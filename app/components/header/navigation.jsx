@@ -15,7 +15,6 @@ const navigation = () => {
     { title: "Contact us", link: "/contact" },
     { title: "FAQ", link: "/faq" },
   ];
-
   return (
     <header className="md:w-[80vw] w-full mx-auto rounded-full h-12 bg-transparent backdrop-blur-sm z-50 border flex  justify-between items-center px-5 overflow-hidden">
       {/* logo */}
@@ -47,7 +46,7 @@ const navigation = () => {
       {/* profile || login/register button */}
       <div>
         {session ? (
-          <div className="flex gap-x-4 justify-center items-center">
+          <div className="flex gap-x-2 justify-center items-center">
             {session?.user.role === "admin" && (
               <Link
                 href={"admin-dashboard"}

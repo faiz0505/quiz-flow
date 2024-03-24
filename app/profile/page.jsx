@@ -11,62 +11,14 @@ import LogoutBtn from "../components/logout";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { Spinner } from "@nextui-org/spinner";
-const fetchQuizes = async (url, user) => {
-  try {
-    const res = await fetch(`${url}/api/quiz`, {
-      method: "GET",
-      next: { revalidate: 10 },
-    });
+import { fetchQuizzessByUser } from "../actions/quiz.actions";
+import { fetchCategories } from "../actions/triviaApi.actons";
 
-    const data = await res.json();
-
-    const filteredData = data.filter((quiz) => quiz.user === user);
-
-    return filteredData;
-  } catch (error) {
-    return null;
-  }
-};
-const fetchCategories = async () => {
-  try {
-    const fetchCategories = await fetch(
-      "https://opentdb.com/api_category.php",
-      {
-        next: { revalidate: 10 },
-      }
-    );
-    const category = await fetchCategories.json();
-    return category;
-  } catch (error) {
-    return null;
-  }
-};
-
-const fetchUsers = async (url, authenticated, admin) => {
-  try {
-    if (authenticated == admin) {
-      const res = await fetch(`${url}/api/users`, {
-        method: "GET",
-        next: {
-          revalidate: 60,
-        },
-      });
-      const data = await res.json();
-      return data;
-    }
-  } catch (error) {
-    return error;
-  }
-};
 const page = async () => {
-  const url = process.env.URL;
-  const adminEmail = process.env.MY_EMAIL;
   const session = await getServerSession(authOptions);
 
-  const admin = await fetchUsers(url, session?.user.email, adminEmail);
-  console.log(admin);
   let isLoading = true;
-  const filteredData = await fetchQuizes(url, session.user.email);
+  const filteredData = await fetchQuizzessByUser(session.user.id);
   if (filteredData || filteredData.length > 0) {
     isLoading = false;
   }

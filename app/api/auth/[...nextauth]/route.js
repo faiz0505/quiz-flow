@@ -23,13 +23,19 @@ export const authOptions = {
           if (comparePassword) {
             const updatedUser = await User.updateOne(
               { email: credentials.email },
-              { lastSignedIn: new Date().toLocaleDateString() }
+              {
+                lastSignedIn:
+                  new Date().toLocaleDateString() +
+                  " " +
+                  new Date().toLocaleTimeString(),
+              }
             );
             revalidatePath("/", "layout");
             return {
               name: user.name,
               email: user.email,
               role: "",
+              id: user._id,
             };
           } else {
             return Promise.reject(new Error("Invalid password"));
@@ -50,6 +56,7 @@ export const authOptions = {
     async jwt({ token, user }) {
       try {
         if (user) {
+          token.id = user.id;
           if (user.email === process.env.MY_EMAIL) {
             token.role = "admin";
           } else {
@@ -64,6 +71,7 @@ export const authOptions = {
     async session({ session, token }) {
       try {
         if (session?.user) {
+          session.user.id = token.id;
           session.user.role = token.role;
         }
         return session;

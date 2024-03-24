@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const quizSchema = new mongoose.Schema({
-  user: String,
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   category: String,
   difficulty: String,
   points: Number,

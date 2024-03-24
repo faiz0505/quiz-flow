@@ -5,7 +5,6 @@ export async function middleware(request) {
     request.cookies.get("next-auth.session-token") ||
     request.cookies.get("__Secure-next-auth.session-token");
   const path = request.nextUrl.pathname;
-
   if (path.startsWith("/profile")) {
     if (!isAuthenticate) {
       return NextResponse.rewrite(new URL("/signin", request.url));
@@ -27,5 +26,11 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/profile", "/signin", "/signup", "/quiz-start/:path*"],
+  matcher: [
+    "/profile",
+    "/signin",
+    "/signup",
+    "/quiz-start/:path*",
+    "/admin-dashboard/:path*",
+  ],
 };

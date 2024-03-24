@@ -18,9 +18,9 @@ import { AiOutlineMore } from "react-icons/ai";
 import Link from "next/link";
 import { deleteUser } from "../actions/user.actions";
 import toast from "react-hot-toast";
-const UsersTable = ({ users }) => {
+const UsersTable = ({ users, admin }) => {
   return (
-    <Table aria-label="Example static collection table">
+    <Table aria-label="quiz flow users">
       <TableHeader>
         <TableColumn>User</TableColumn>
         <TableColumn>Joined</TableColumn>
@@ -29,9 +29,9 @@ const UsersTable = ({ users }) => {
         <TableColumn></TableColumn>
       </TableHeader>
       <TableBody emptyContent="No users to display">
-        {users.map((user, i) => {
+        {users.map((user) => {
           return (
-            <TableRow key={i}>
+            <TableRow key={user._id}>
               <TableCell>
                 <User name={user.name} description={user.email} />
               </TableCell>
@@ -50,9 +50,10 @@ const UsersTable = ({ users }) => {
                     <Divider />
                     <Button
                       color="danger"
+                      isDisabled={user.email === admin ? true : false}
                       onPress={async () => {
-                        const deletedUser = await deleteUser(user._id);
-                        if (!deletedUser) {
+                        const response = await deleteUser(user._id, user.email);
+                        if (!response.deletedUser) {
                           toast.error("user not deleted");
                         } else {
                           toast.success("user deleted successfully");

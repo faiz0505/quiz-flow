@@ -49,7 +49,10 @@ export async function POST(request) {
           password: encryptedPassword,
           osInfo: `${osInfo.ostype}, ${osInfo.osHostname}, ${osInfo.userInfo}`,
           location: `${location.city}, ${location.region}, ${location.country}, tiem zone : ${location.timezone}`,
-          createdAt: new Date().toLocaleDateString(),
+          createdAt:
+            new Date().toLocaleDateString() +
+            " " +
+            new Date().toLocaleTimeString(),
           lastSingnedIn: "",
           role: "",
         });
