@@ -32,7 +32,7 @@ const fetchCategories = async () => {
     const fetchCategories = await fetch(
       "https://opentdb.com/api_category.php",
       {
-        next: { revalidate: 200 },
+        next: { revalidate: 10 },
       }
     );
     const category = await fetchCategories.json();
@@ -41,9 +41,30 @@ const fetchCategories = async () => {
     return null;
   }
 };
+
+const fetchUsers = async (url, authenticated, admin) => {
+  try {
+    if (authenticated == admin) {
+      const res = await fetch(`${url}/api/users`, {
+        method: "GET",
+        next: {
+          revalidate: 60,
+        },
+      });
+      const data = await res.json();
+      return data;
+    }
+  } catch (error) {
+    return error;
+  }
+};
 const page = async () => {
   const url = process.env.URL;
+  const adminEmail = process.env.MY_EMAIL;
   const session = await getServerSession(authOptions);
+
+  const admin = await fetchUsers(url, session?.user.email, adminEmail);
+  console.log(admin);
   let isLoading = true;
   const filteredData = await fetchQuizes(url, session.user.email);
   if (filteredData || filteredData.length > 0) {

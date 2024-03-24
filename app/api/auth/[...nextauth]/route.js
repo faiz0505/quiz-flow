@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { dbConnection } from "@/app/lib/db/connection";
 import { User } from "@/app/lib/db/model";
 import bcrypt from "bcrypt";
+import { revalidatePath } from "next/cache";
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -20,7 +21,16 @@ export const authOptions = {
             user.password
           );
           if (comparePassword) {
-            return user;
+            const updatedUser = await User.updateOne(
+              { email: credentials.email },
+              { lastSignedIn: new Date().toLocaleDateString() }
+            );
+            revalidatePath("/", "layout");
+            return {
+              name: user.name,
+              email: user.email,
+              role: "",
+            };
           } else {
             return Promise.reject(new Error("Invalid password"));
           }
@@ -35,6 +45,32 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/signin",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      try {
+        if (user) {
+          if (user.email === process.env.MY_EMAIL) {
+            token.role = "admin";
+          } else {
+            token.role = "user";
+          }
+        }
+        return token;
+      } catch (error) {
+        throw new Error(`An error occurred : ${error}`);
+      }
+    },
+    async session({ session, token }) {
+      try {
+        if (session?.user) {
+          session.user.role = token.role;
+        }
+        return session;
+      } catch (error) {
+        throw new Error(`An error occurred : ${error}`);
+      }
+    },
   },
 };
 const handler = nextAuth(authOptions);

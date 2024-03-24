@@ -15,6 +15,11 @@ const userSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
+  osInfo: String,
+  location: String,
+  lastSignedIn: String,
+  createdAt: String,
+  role: String,
 });
 
 export const User =

@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/popover";
 import { useSession } from "next-auth/react";
@@ -15,6 +15,7 @@ const navigation = () => {
     { title: "Contact us", link: "/contact" },
     { title: "FAQ", link: "/faq" },
   ];
+
   return (
     <header className="md:w-[80vw] w-full mx-auto rounded-full h-12 bg-transparent backdrop-blur-sm z-50 border flex  justify-between items-center px-5 overflow-hidden">
       {/* logo */}
@@ -43,17 +44,25 @@ const navigation = () => {
           })}
         </ul>
       </div>
-      {/* profile | login/register button */}
+      {/* profile || login/register button */}
       <div>
         {session ? (
-          <div className="flex gap-x-2 justify-center">
+          <div className="flex gap-x-4 justify-center items-center">
+            {session?.user.role === "admin" && (
+              <Link
+                href={"admin-dashboard"}
+                className="text-blue-500 hover:text-white"
+              >
+                Dashboard
+              </Link>
+            )}
             <Button
               radius="full"
               color="primary"
               size="sm"
               startContent={<FaUser />}
             >
-              <Link href={"/profile"} className="text-white">
+              <Link href={"/profile"} className="text-white font-bold">
                 Profile
               </Link>
             </Button>
