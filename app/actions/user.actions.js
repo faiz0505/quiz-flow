@@ -39,3 +39,19 @@ export const fetchUserById = async (id) => {
     ErrorHandler(error);
   }
 };
+export const fetchUserByEmail = async (email) => {
+  try {
+    await dbConnection();
+    const user = await User.findOne({ email: email });
+    return JSON.parse(JSON.stringify(user));
+  } catch (error) {
+    ErrorHandler(error);
+  }
+};
+
+export const updateUserPassword = async () => {
+  try {
+  } catch (error) {
+    ErrorHandler(error);
+  }
+};

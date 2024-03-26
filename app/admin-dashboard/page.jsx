@@ -1,10 +1,16 @@
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
-
 import React from "react";
 import UsersTable from "../components/UsersTable";
 import { getAllUser } from "../actions/user.actions";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 const page = async () => {
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role !== "admin") {
+    redirect("/");
+  }
   const users = await getAllUser();
   const admin = process.env.MY_EMAIL;
   return (

@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
   location: String,
   lastSignedIn: String,
   createdAt: String,
-  role: String,
 });
 
 export const User =

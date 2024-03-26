@@ -26,11 +26,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: [
-    "/profile",
-    "/signin",
-    "/signup",
-    "/quiz-start/:path*",
-    "/admin-dashboard/:path*",
-  ],
+  matcher: ["/profile", "/signin", "/signup", "/quiz-start/:path*"],
 };

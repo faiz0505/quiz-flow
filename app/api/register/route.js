@@ -48,13 +48,12 @@ export async function POST(request) {
           email: userData.email,
           password: encryptedPassword,
           osInfo: `${osInfo.ostype}, ${osInfo.osHostname}, ${osInfo.userInfo}`,
-          location: `${location.city}, ${location.region}, ${location.country}, tiem zone : ${location.timezone}`,
+          location: `${location.region}, ${location.country}, tiem zone : ${location.timezone}`,
           createdAt:
             new Date().toLocaleDateString() +
             " " +
             new Date().toLocaleTimeString(),
           lastSingnedIn: "",
-          role: "",
         });
         revalidatePath("/", "layout");
         return NextResponse.json({ message: "Success" }, { status: 201 });

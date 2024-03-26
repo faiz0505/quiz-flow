@@ -63,7 +63,7 @@ const page = async () => {
                           className="w-full"
                         >
                           {
-                            category.trivia_categories.find(
+                            category?.trivia_categories.find(
                               (c) => c.id == item.category
                             ).name
                           }

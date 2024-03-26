@@ -17,7 +17,10 @@ const page = () => {
       <div className="bg-white p-4 rounded shadow">
         <h3 className="text-lg font-bold">Faiz Ali</h3>
         <p className="text-gray-600">
-          Full Stack Developer [Reactjs,Nextjs,Nodejs]
+          Full Stack Web Developer [Reactjs,Nextjs,Nodejs]
+        </p>
+        <p className="text-gray-600 text-sm">
+          College : Late Babanrao Deshmukh Mahaviddiyalay, Amravati
         </p>
         <h4 className="mt-2 font-bold mb-1">Follow :</h4>
         <ul className="flex gap-x-4">

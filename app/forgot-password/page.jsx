@@ -1,68 +1,74 @@
 "use client";
-import React, { useState } from "react";
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  Input,
   Button,
-  Divider,
-  useDisclosure,
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
   Modal,
   ModalHeader,
   ModalContent,
   ModalBody,
   ModalFooter,
+  useDisclosure,
+  Divider,
 } from "@nextui-org/react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { ErrorHandler } from "../utils";
+import { fetchUserByEmail } from "../actions/user.actions";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { sendMail } from "../actions/mail.actions";
+
 const page = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [otp, setOtp] = useState();
+  const [isOtpSent, setIsOtpSent] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
-  const [otp, setOtp] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const router = useRouter();
-  const sendVerificationCode = async (email) => {
-    try {
-      const res = await fetch("/api/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(email),
-      });
+  useEffect(() => {
+    let generateOtp = Math.floor(Math.random() * 9000) + 1000;
+    setOtp(generateOtp);
+  }, []);
 
-      if (res.ok) {
-        const result = await res.json();
-        toast.success("Verification code sent to email");
-        setOtp(result.message);
-        onOpen();
+  const handleSendMail = async (data) => {
+    try {
+      const isRegistered = await fetchUserByEmail(data.email);
+      if (isRegistered) {
+        let templateParams = {
+          from_name: "Quiz Flow",
+          message: `use this verification code to update your password ${otp}`,
+          to_email: data.email,
+        };
+
+        const response = await sendMail("template_czuxojl", templateParams);
+
+        if (response === 200) {
+          setIsOtpSent(true);
+          toast.success("Verification code sent successfully");
+          onOpen();
+        } else {
+          toast.error("verification code not sent");
+        }
       } else {
-        const result = await res.json();
-        toast.error(result.error);
+        toast.error("Email not registered");
       }
     } catch (error) {
       console.log(error);
-      toast.error("An error occurred! Please try again or refresh the page");
-    } finally {
-      setIsLoading(false);
+      ErrorHandler(error);
     }
   };
 
-  const onSubmit = async (data) => {
-    setIsLoading(true);
-    await sendVerificationCode(data.email);
-  };
-
-  const validateCode = async (data) => {
+  const validateCode = (data) => {
     const { code } = data;
     if (code == otp) {
       setIsAuthenticated(true);
@@ -148,7 +154,7 @@ const page = () => {
           <Divider />
           <CardBody>
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(handleSendMail)}
               className="flex flex-col gap-3"
             >
               <Input
@@ -171,52 +177,58 @@ const page = () => {
                 Submit
               </Button>
             </form>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-              <ModalContent>
-                {(onClose) => (
-                  <>
-                    <ModalHeader className="flex justify-center">
-                      <h1 className="text-xl font-bold">Reset Password</h1>
-                    </ModalHeader>
-                    <ModalBody>
-                      <form
-                        onSubmit={handleSubmit(validateCode)}
-                        className="flex flex-col gap-y-3"
-                      >
-                        <Input
-                          type="number"
-                          variant="bordered"
-                          label="code"
-                          name="code"
-                          {...register("code", {
-                            maxLength: {
-                              value: 4,
-                              message: "Please enter 4 digit code",
-                            },
-                            minLength: {
-                              value: 4,
-                              message: "Please enter 4 digit code",
-                            },
+            {isOtpSent && (
+              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                  {(onClose) => (
+                    <>
+                      <ModalHeader className="flex justify-center">
+                        <h1 className="text-xl font-bold">Reset Password</h1>
+                      </ModalHeader>
+                      <ModalBody>
+                        <form
+                          onSubmit={handleSubmit(validateCode)}
+                          className="flex flex-col gap-y-3"
+                        >
+                          <Input
+                            type="number"
+                            variant="bordered"
+                            label="code"
+                            name="code"
+                            {...register("code", {
+                              maxLength: {
+                                value: 4,
+                                message: "Please enter 4 digit code",
+                              },
+                              minLength: {
+                                value: 4,
+                                message: "Please enter 4 digit code",
+                              },
 
-                            required: "please enter code",
-                          })}
-                          isInvalid={errors.code && true}
-                          errorMessage={errors.code && errors.code.message}
-                        />
-                        <Button color="primary" type="submit">
-                          Submit
+                              required: "please enter code",
+                            })}
+                            isInvalid={errors.code && true}
+                            errorMessage={errors.code && errors.code.message}
+                          />
+                          <Button color="primary" type="submit">
+                            Submit
+                          </Button>
+                        </form>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          color="danger"
+                          variant="light"
+                          onPress={onClose}
+                        >
+                          Close
                         </Button>
-                      </form>
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button color="danger" variant="light" onPress={onClose}>
-                        Close
-                      </Button>
-                    </ModalFooter>
-                  </>
-                )}
-              </ModalContent>
-            </Modal>
+                      </ModalFooter>
+                    </>
+                  )}
+                </ModalContent>
+              </Modal>
+            )}
           </CardBody>
         </Card>
       )}

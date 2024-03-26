@@ -4,6 +4,8 @@ import NextauthProvider from "./lib/nextauth/provider";
 import Navigation from "./components/header/navigation";
 import Footer from "./components/footer";
 import { Toaster } from "react-hot-toast";
+import NextTopLoader from "nextjs-toploader";
+
 export const metadata = {
   title: "Quiz Flow",
   description:
@@ -22,6 +24,7 @@ export default function RootLayout({ children }) {
         <Provider>
           <NextauthProvider>
             <Navigation />
+            <NextTopLoader />
             {children}
             <Footer />
           </NextauthProvider>
@@ -33,7 +36,6 @@ export default function RootLayout({ children }) {
           containerClassName=""
           containerStyle={{}}
           toastOptions={{
-            // Define default options
             className: "",
             duration: 3000,
             style: {
@@ -41,7 +43,6 @@ export default function RootLayout({ children }) {
               color: "#363636",
             },
 
-            // Default options for specific types
             success: {
               duration: 3000,
               theme: {

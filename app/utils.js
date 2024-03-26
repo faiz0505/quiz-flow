@@ -1,3 +1,9 @@
+import toast from "react-hot-toast";
+
 export const ErrorHandler = (error) => {
-  throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  toast.error(
+    typeof error === "string"
+      ? error
+      : "Error occurred while processing your request! "
+  );
 };
