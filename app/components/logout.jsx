@@ -9,7 +9,7 @@ const logout = () => {
   const handelLogout = async () => {
     try {
       const res = await signOut({ redirect: false });
-      router.replace("/");
+      router.push("/");
     } catch (error) {
       toast.error(error);
     }

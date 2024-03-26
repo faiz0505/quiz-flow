@@ -3,6 +3,7 @@ import HomePage from "./components/home";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 import { TbApi, TbCategoryPlus, TbAdjustmentsHorizontal } from "react-icons/tb";
+import Image from "next/image";
 const page = () => {
   return (
     <main className="flex flex-col items-center gap-y-5">
@@ -10,7 +11,8 @@ const page = () => {
       <Card className="md:w-1/2 w-full">
         <CardHeader>
           <p className="text-center font-semibold text-sm">
-            Explore diverse quizzes, track your scores and review your test with QuizFlow's dynamic features
+            Explore diverse quizzes, track your scores and review your test with
+            QuizFlow's dynamic features
           </p>
         </CardHeader>
         <Divider />

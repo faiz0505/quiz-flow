@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Button } from "@nextui-org/button";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { deleteQuiz } from "../actions/quiz.actions";
+
 const DeleteBtn = ({ id }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -15,8 +15,8 @@ const DeleteBtn = ({ id }) => {
       radius="full"
       onClick={async () => {
         setIsLoading(true);
-        const deleteQuiz = await deleteQuiz(id);
-        if (deleteQuiz) {
+        const res = await deleteQuiz(id);
+        if (res) {
           setIsLoading(false);
           toast.success("Quiz deleted successfully");
         } else {

@@ -7,14 +7,14 @@ import {
   Input,
   Textarea,
 } from "@nextui-org/react";
-import emailjs from "@emailjs/browser";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import { sendMail } from "../actions/mail.actions";
 const page = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const form = useRef();
+
   const { data: session } = useSession();
   const {
     register,
@@ -27,14 +27,14 @@ const page = () => {
       if (!session) {
         toast.error("please login to continue");
       } else {
+        let template = {
+          from_email: data.from_email,
+          from_name: data.from_name,
+          message: data.message,
+        };
         setIsLoading(true);
-        const sendMail = await emailjs.sendForm(
-          "service_fcv0vr4",
-          "template_czuxojl",
-          form.current,
-          "8gnHHMPCt7gDcWz8G"
-        );
-        if (sendMail.status === 200) {
+        const res = await sendMail("template_czuxojl", template);
+        if (res === 200) {
           toast.success("Thank you! your message was sent");
           reset();
         } else {
@@ -57,7 +57,6 @@ const page = () => {
         <CardBody>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            ref={form}
             className="flex flex-col gap-y-2"
           >
             <Input
@@ -69,7 +68,7 @@ const page = () => {
               errorMessage={errors?.from_name?.message}
             />
             <Input
-              type="text"
+              type="email"
               placeholder={session ? session.user.email : "Your email"}
               variant="bordered"
               {...register("from_email", {

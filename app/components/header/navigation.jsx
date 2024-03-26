@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/popover";
 import { useSession } from "next-auth/react";
