@@ -1,20 +1,14 @@
+import { fetchALlQuiz } from "@/app/actions/quiz.actions";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Radio, RadioGroup } from "@nextui-org/radio";
 import { Spinner } from "@nextui-org/spinner";
 import React from "react";
 
 const page = async ({ params }) => {
-  const url = process.env.URL;
-  const res = await fetch(`${url}/api/quiz`, {
-    method: "GET",
-    next: {
-      revalidate: 10,
-    },
-  });
-  const result = await res.json();
+  const result = await fetchALlQuiz();
   const filterdQuiz = result.find((quiz) => quiz._id === params.id);
   const quizes = Object.values(filterdQuiz.quiz);
-  // console.log(filterdQuiz);
+
   return !quizes ? (
     <Spinner />
   ) : (

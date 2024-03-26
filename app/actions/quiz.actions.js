@@ -14,6 +14,15 @@ export const fetchQuizzessByUser = async (user) => {
     ErrorHandler(error);
   }
 };
+export const fetchALlQuiz = async () => {
+  try {
+    await dbConnection();
+    const posts = await Quiz.find();
+    return JSON.parse(JSON.stringify(posts));
+  } catch (error) {
+    ErrorHandler(error);
+  }
+};
 
 export const deleteQuiz = async (id) => {
   try {
