@@ -60,10 +60,10 @@ const navigation = () => {
               color="primary"
               size="sm"
               startContent={<FaUser />}
+              as={Link}
+              href="/profile"
             >
-              <Link href={"/profile"} className="text-white font-bold">
-                Profile
-              </Link>
+              Profile
             </Button>
             <div className="md:hidden">
               <Popover placement="bottom-end" size="lg" radius="sm">
@@ -91,15 +91,24 @@ const navigation = () => {
           </div>
         ) : (
           <div className="flex gap-x-2 justify-center">
-            <Button color="primary" size="sm" radius="full">
-              <Link href={"/signin"} className="text-white">
-                SignIn
-              </Link>
+            <Button
+              color="primary"
+              size="sm"
+              radius="full"
+              as={Link}
+              href="/signin"
+            >
+              Signin
             </Button>
-            <Button color="primary" variant="bordered" size="sm" radius="full">
-              <Link href={"/signup"} className="text-white">
-                register
-              </Link>
+            <Button
+              color="primary"
+              variant="bordered"
+              size="sm"
+              radius="full"
+              as={Link}
+              href="/signup"
+            >
+              Register
             </Button>
             <div className="md:hidden">
               <Popover placement="bottom-end" size="lg" radius="none">

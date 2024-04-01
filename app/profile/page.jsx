@@ -16,7 +16,6 @@ import { fetchCategories } from "../actions/triviaApi.actons";
 
 const page = async () => {
   const session = await getServerSession(authOptions);
-
   let isLoading = true;
   const filteredData = await fetchQuizzessByUser(session.user.id);
   if (filteredData || filteredData.length > 0) {

@@ -45,12 +45,13 @@ const page = () => {
       const isRegistered = await fetchUserByEmail(data.email);
       if (isRegistered) {
         let templateParams = {
+          to_name: "user",
           from_name: "Quiz Flow",
           message: `use this verification code to update your password ${otp}`,
           to_email: data.email,
         };
 
-        const response = await sendMail("template_czuxojl", templateParams);
+        const response = await sendMail("template_kvstclj", templateParams);
 
         if (response === 200) {
           setIsOtpSent(true);
