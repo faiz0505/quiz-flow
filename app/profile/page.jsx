@@ -17,8 +17,14 @@ import { fetchCategories } from "../actions/triviaApi.actons";
 const page = async () => {
   const session = await getServerSession(authOptions);
   let isLoading = true;
-  const filteredData = await fetchQuizzessByUser(session.user.id);
-  if (filteredData || filteredData.length > 0) {
+  let filteredData = [];
+  if (session.user.email === "login@quizflow.com") {
+    isLoading = false;
+  } else {
+    const fetchData = await fetchQuizzessByUser(session.user.id);
+    filteredData = [...fetchData];
+  }
+  if (filteredData || filteredData?.length > 0) {
     isLoading = false;
   }
   const category = await fetchCategories();

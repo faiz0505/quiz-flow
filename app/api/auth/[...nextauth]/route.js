@@ -11,6 +11,17 @@ export const authOptions = {
       credentials: {},
       async authorize(credentials) {
         //    check user exist ot not
+        if (
+          credentials.email === "login@quizflow.com" &&
+          credentials.password === "12345678"
+        ) {
+          return {
+            name: "Quiz-Flow User",
+            email: credentials.email,
+            role: "",
+            id: "demo-user",
+          };
+        }
         await dbConnection();
         const user = await User.findOne({ email: credentials.email });
         if (user) {

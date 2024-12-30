@@ -64,7 +64,6 @@ const Register = () => {
         setIsOtpSent(true);
       }
     } catch (error) {
-      console.log(error);
       toast.error(
         "An error occurred!please try again later or refresh the page"
       );
